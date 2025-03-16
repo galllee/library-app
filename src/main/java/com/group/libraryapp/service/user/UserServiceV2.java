@@ -20,9 +20,6 @@ public class UserServiceV2 {
         this.userRepository = userRepository;
     }
 
-    //아래 있는 함수가 시작될 때 start transaction;을 해준다 (트랜잭션을 시작)
-    //함수가 예외(에러) 없이 잘 끝났다면 commit
-    //혹시라도 문제가 있다면 rollback
     @Transactional
     public void saveUser(UserCreateRequest request){
         userRepository.save(new User(request.getName(), request.getAge()));
@@ -36,7 +33,6 @@ public class UserServiceV2 {
     @Transactional
     public void updateUser(UserUpdateRequest request) {
         // select * from user where id = ?;
-        //Optional<User>
         User user = userRepository.findById(request.getId())
                 .orElseThrow(IllegalArgumentException::new);
         user.updateName(request.getName());

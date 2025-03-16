@@ -32,10 +32,6 @@ public class BookService {
         bookRepository.save(new Book(request.getName()));
     }
 
-
-//    1. 책 정보를 가져온다.
-//2. 대출 기록 정보를 확인해서, 대출중인지 확인
-//3. 만약 확인했는데 대출 중이라면 예외를 발생시킨다.
     @Transactional
     public void loanBook(BookLoanRequest request) {
 
@@ -43,13 +39,10 @@ public class BookService {
 
         if(userLoanHistoryRepository.existsByBookNameAndIsReturn(book.getName(), false))
             throw new IllegalArgumentException("대출 중인 책입니다.");
-        //        1. 유저 정보를 가져온다.
-//2. 유저 정보와 책 정보를 기반으로 UserLoanHistory를 저장
 
         User user = userRepository.findByName(request.getUserName()).orElseThrow(IllegalArgumentException::new);
 
         user.loanBook(request.getBookName());
-        //userLoanHistoryRepository.save(new UserLoanHistory(user, book.getName(), false));
     }
 
     @Transactional
